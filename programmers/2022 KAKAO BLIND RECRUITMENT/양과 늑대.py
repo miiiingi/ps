@@ -7,6 +7,22 @@ def makeGraph(edges):
     return graph
 def solution(info, edges):
     graph = makeGraph(edges)
+    visited = []
+    cnt_w = 0
+    cnt_s = 0
+    def search(graph, n):
+        for v in graph[n]:
+            search(graph, v)
+        return
+    for n in graph.keys():
+        if n not in visited:
+            visited.append(n)
+            if info[n] == 0:
+                cnt_s += 1
+            else:
+                cnt_w += 1
+            search(graph, n)
+    search(graph, visited)
     answer = 0
     return answer
 
