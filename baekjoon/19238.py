@@ -1,29 +1,115 @@
 import sys
-N, M, F = map(int, sys.stdin.readline().split(' '))
+from collections import deque
+
+
+def findDest(startX, startY, destX, destY, remainedFuel):
+    # 손님을 태우고 목적지로 향하는 함수
+    fuelMap = [[0 for _ in range(N)] for _ in range(N)]
+    visited = [[0 for _ in range(N)] for _ in range(N)]
+    locations = deque()
+    locations.append([startX, startY, remainedFuel])
+    while locations:
+        x, y, F = locations.popleft()
+        if F <= -1:
+            return -1
+        if destX == x and destY == y:
+            return F + (remainedFuel - F) * 2
+        visited[x][y] = 1
+        fuelMap[x][y] = F
+        for dx, dy in [(1, 0), (-1, 0), (0, 1), (0, -1)]:
+            ux = x + dx
+            uy = y + dy
+            uF = F - 1
+            if ux < 0 or ux >= N or uy < 0 or uy >= N or visited[ux][uy] == 1 or wall[ux][uy] == 1:
+                continue
+            if visited[ux][uy] != 1 and wall[ux][uy] != 1:
+                visited[ux][uy] = 1
+                fuelMap[ux][uy] = uF
+                locations.append([ux, uy, uF])
+    print(-1)
+    exit(0)
+
+
+def bfs(startX, startY, fuel):
+    fuelMap = [[0 for _ in range(N)] for _ in range(N)]
+    visited = [[0 for _ in range(N)] for _ in range(N)]
+    locations = deque()
+    locations.append([startX, startY, fuel])
+    finded = False
+    findedList = []
+    remainedFuel = fuel
+    if startList[startX][startY] != 0:
+        finededNumber = startList[startX][startY]
+        destX, destY = endList[finededNumber-1]
+        regainedFuel = findDest(startX, startY, destX, destY, remainedFuel)
+        startList[startX][startY] = 0
+        return destX, destY, regainedFuel
+    while locations:
+        x, y, F = locations.popleft()
+        if F <= -1:
+            return -1, -1, -1
+        visited[x][y] = 1
+        fuelMap[x][y] = F
+        # 이렇게 가야 행 > 열 순서로 탐색을하고 행 번호가 커지지않도록 탐색가능하다.
+        for dx, dy in [(-1, 0), (0, -1), (0, 1), (1, 0)]:
+            ux = x + dx
+            uy = y + dy
+            uF = F - 1
+            if ux < 0 or ux >= N or uy < 0 or uy >= N or visited[ux][uy] == 1 or wall[ux][uy] == 1:
+                continue
+            if visited[ux][uy] != 1 and wall[ux][uy] != 1:
+                visited[ux][uy] = 1
+                fuelMap[ux][uy] = uF
+                locations.append([ux, uy, uF])
+
+        if startList[x][y] != 0 and finded and remainedFuel == F:
+            findedList.append([x, y])
+
+        if F < remainedFuel and finded:
+            findedList.sort()
+            startX, startY = findedList[0][0], findedList[0][1]
+            finededNumber = startList[startX][startY]
+            destX, destY = endList[finededNumber-1]
+            regainedFuel = findDest(startX, startY, destX, destY, remainedFuel)
+            startList[startX][startY] = 0
+            return destX, destY, regainedFuel
+
+        if startList[x][y] != 0 and not finded:
+            finded = True
+            remainedFuel = F
+            findedList.append([x, y])
+            if findedList and not locations:
+                findedList.sort()
+                startX, startY = findedList[0][0], findedList[0][1]
+                finededNumber = startList[startX][startY]
+                destX, destY = endList[finededNumber-1]
+                regainedFuel = findDest(startX, startY, destX, destY, remainedFuel)
+                startList[startX][startY] = 0
+                return destX, destY, regainedFuel
+
+    print(-1)
+    exit(0)
+
+
+N, M, fuel = map(int, sys.stdin.readline().split(' '))
 cnt = 0
-Map = [[] for _ in range(N)]
-Users = [[] for _ in range(M)]
-visited = []
+startList = [[0 for _ in range(N)] for _ in range(N)]
+endList = [[0, 0] for _ in range(M)]
+wall = [[] for _ in range(N)]
+
 
 for i in range(N):
-    Map[i] = list(map(int, sys.stdin.readline().split(' ')))
-start_x, start_y = map(int, sys.stdin.readline().split(' '))
-for i in range(M):
-    Users[i] = list(map(int, sys.stdin.readline().split(' ')))
+    wall[i] = list(map(int, sys.stdin.readline().split(' ')))
+startX, startY = map(int, sys.stdin.readline().split(' '))
+for i in range(1, M+1):
+    userStartX, userStartY, destX, destY = list(
+        map(int, sys.stdin.readline().split(' ')))
+    startList[userStartX-1][userStartY-1] = i
+    endList[i-1][0] = destX-1
+    endList[i-1][1] = destY-1
 
-# 필요한 것: 지금까지 몇 번 움직였는지 -> 이것을 이용해서 가장 가까이에 있는 승객을 알아내야함.
-# 그리고 그 후에 다시 visited을 초기화하고 도착지까지 연료가 몇 소모되는지 계산해야함.
-
-def dfs(i, j, dest_x, dest_y, visited, cnt):
-    if i < 0 or i >= len(Map) or j < 0 or j >= len(Map[0]) or Map[i][j] == 1 or [i, j] in visited or (i==dest_x and j==dest_y):
-        return
-    Map[i][j] = 1
-    visited.append([i, j])
-    cnt +=1
-    dfs(i, j-1, dest_x, dest_y, visited, cnt)
-    dfs(i+1, j, dest_x, dest_y, visited, cnt)
-    dfs(i-1, j, dest_x, dest_y, visited, cnt)
-    dfs(i, j+1, dest_x, dest_y, visited, cnt)
-
-for User in Users:
-    dfs(start_x-1, start_y-1, User[0]-1, User[1]-1,visited, cnt)
+startX -= 1
+startY -= 1
+for _ in range(M):
+    startX, startY, fuel = bfs(startX, startY, fuel)
+print(fuel)
