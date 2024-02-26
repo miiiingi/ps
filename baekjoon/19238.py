@@ -1,6 +1,7 @@
 import sys
 from collections import deque
 
+
 def findDest(startX, startY, destX, destY, remainedFuel):
     # 손님을 태우고 목적지로 향하는 함수
     fuelMap = [[0 for _ in range(N)] for _ in range(N)]
@@ -27,7 +28,7 @@ def findDest(startX, startY, destX, destY, remainedFuel):
             fuelMap[ux][uy] = uF
             locations.append([ux, uy, uF])
 
-    # 손님을 찾지 못했는데, 더 이상 갈 수 있는 곳이 없는 상태 -> 갇혔다거나.. 
+    # 손님을 찾지 못했는데, 더 이상 갈 수 있는 곳이 없는 상태 -> 갇혔다거나..
     print(-1)
     exit(0)
 
@@ -95,7 +96,7 @@ def bfs(startX, startY, fuel):
                 startList[startX][startY] = 0
                 return destX, destY, regainedFuel
 
-    # 손님을 찾지 못했는데, 더 이상 갈 수 있는 곳이 없는 상태 -> 갇혔다거나.. 
+    # 손님을 찾지 못했는데, 더 이상 갈 수 있는 곳이 없는 상태 -> 갇혔다거나..
     print(-1)
     exit(0)
 
