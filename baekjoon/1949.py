@@ -37,10 +37,3 @@ for _ in range(N-1):
     town[v-1].append(u-1)
 
 print(dfs(0))
-
-# for i in range(N):
-#     p = heapq.heappop(queue)
-#     max_ind = p[1]
-#     if not visited[max_ind]:
-#         search_tree(max_ind)
-#         answer += -1 * p[0]
