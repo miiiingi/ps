@@ -1,17 +1,16 @@
 import sys
 import collections
+sys.setrecursionlimit(12345678)
 def dfs(node):
-    global cnt
-    if node == deletedNode:
-        return
+    global deletedNode
     visited[node] = True
     for c in tree[node]:
         if visited[c]:
             continue
+        if node == deletedNode or nodes[c] == -2:
+            nodes[c] = -2
+            nodes[node] = -2
         dfs(c)
-    else:
-        if len(tree[node]) == 0 :
-            cnt += 1
 N = int(sys.stdin.readline())
 nodes = list(map(int, sys.stdin.readline().split()))
 deletedNode = int(sys.stdin.readline())
@@ -23,6 +22,8 @@ for i in range(N):
         tree[nodes[i]].append(i)
         continue
     rootNode = i
-    
 dfs(rootNode)
+for i in range(len(nodes)):
+    if nodes[i] != -2 and i not in nodes:
+        cnt += 1
 print(cnt)
