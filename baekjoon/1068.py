@@ -3,11 +3,13 @@ import collections
 sys.setrecursionlimit(12345678)
 def dfs(node):
     global deletedNode
+    if node == deletedNode:
+        nodes[node] = -2
     visited[node] = True
     for c in tree[node]:
         if visited[c]:
             continue
-        if node == deletedNode or nodes[c] == -2:
+        if node == deletedNode or nodes[c] == -2 or nodes[node] == -2:
             nodes[c] = -2
             nodes[node] = -2
         dfs(c)
