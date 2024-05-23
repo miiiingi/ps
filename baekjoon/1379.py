@@ -7,29 +7,26 @@
 import sys
 import heapq
 N = int(sys.stdin.readline())
-time_list = [[] for _ in range(N)]
+time_list = []
+room = [0] * N
 pq = []
 num_lectures = 0
-for ind in range(N):
+for _ in range(N):
     num_l, time_s, time_e = map(int, sys.stdin.readline().split())
-    time_list[ind].append(time_s)
-    time_list[ind].append(time_e)
-    time_list[ind].append(num_l)
+    time_list.append([time_s, time_e, num_l-1])
 time_list = sorted(time_list, key = lambda x: (x[0], x[1]))
-p = None
-for ind in range(N):
+for s, e, idx in time_list:
     if len(pq) > 0:
-        if pq[0][0] > time_list[ind][0]:
+        if pq[0][0] > s:
             num_lectures += 1
+            room[idx] = num_lectures
         else:
-            p = heapq.heappop(pq)
+            room[idx] = room[pq[0][2]]
+            heapq.heappop(pq)
     else:
         num_lectures += 1
-    if p is not None:
-        time_list[ind][2] = p[2]
-    heapq.heappush(pq, ([time_list[ind][1], time_list[ind][0], num_lectures]))
-elements_set = {sublist[2] for sublist in time_list}
-print(len(elements_set))
-for time in time_list:
-    print(list(elements_set).index(time[2]))
-
+        room[idx] = num_lectures
+    heapq.heappush(pq, ([e, s, idx]))
+print(num_lectures)
+for i in room:
+    print(i)
