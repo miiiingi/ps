@@ -8,5 +8,5 @@ class Solution:
                     p_list.append(t)
         return max(p_list, key = len)
 S = Solution()
-print(S.longestPalindrome("cbbd"))
+print(S.longestPalindrome("babad"))
         
