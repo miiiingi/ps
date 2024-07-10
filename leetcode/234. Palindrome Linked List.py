@@ -1,15 +1,19 @@
-from copy import deepcopy
+import collections
+from typing import Optional
+# Definition for singly-linked list.
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
 class Solution:
-    def __init__(self,):
-        self.stack = []
-    def isPalindrome(self, head) -> bool:
-        while head.next is not None:
-            self.stack.append(head.val)
-            head = head.next
-        else:
-            self.stack.append(head.val)
-        copied = deepcopy(self.stack)[::-1]
-        if self.stack == copied:
+    def isPalindrome(self, head: Optional[ListNode]) -> bool:
+        queue = collections.deque()
+        if not head:
             return True
-        else:
-            return False
+        while head is not None:
+            queue.append(head.val)
+            head = head.next
+        while len(queue) > 1:
+            if queue.popleft() != queue.pop():
+                return False
+        return True
