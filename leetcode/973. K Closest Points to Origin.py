@@ -7,10 +7,9 @@ class Solution:
     def cal_dist(self, x, y):
         return sqrt(x**2 + y**2)
     def kClosest(self, points: List[List[int]], k: int) -> List[List[int]]:
-        queue = [(self.cal_dist(p[0], p[1]), p) for p in points]
+        queue = [[self.cal_dist(p[0], p[1]), p] for p in points]
+        answer = [] 
         heapq.heapify(queue)
         answer = [h[-1] for h in heapq.nsmallest(k, queue)]
-        print(answer)
         return answer 
-
-        
+print(Solution().kClosest([[3,3],[5,-1],[-2,4]], 2))
