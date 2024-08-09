@@ -1,4 +1,5 @@
 #include <vector>
+#include <deque>
 using namespace std;
 
 class Solution {
@@ -7,34 +8,29 @@ public:
     vector<int> stack;
     vector<int> stackCopy;
     vector<int> nextStack;
+    deque<int> arr;
 
     vector<vector<int>> combine(int n, int k) {
-        vector<int> arr(n);
+        arr.resize(n);
         for (int i = 0; i < n; i++)
         {
             arr[i] = i + 1;
         }
-        dfs(arr, k, 0);
+        dfs(k, 0);
         return answer;
         
     }
-    void dfs(vector<int> arr, int k, int start){
-        if (stack.size() == static_cast<size_t>(k))
+    void dfs(int k, int start){
+        if (k == 0)
         {
-            stackCopy = stack;
-            sort(stackCopy.begin(), stackCopy.end());
-            if (find(answer.begin(), answer.end(), stackCopy) == answer.end())
-                {
-                answer.push_back(stack);
-                }
+            answer.push_back(stack);
             return;
         }
+        
         for (size_t i = start; i < arr.size(); i++)
         {
-            nextStack = arr;
-            nextStack.erase(nextStack.begin() + i);
             stack.push_back(arr[i]);
-            dfs(nextStack, k, start);
+            dfs(k-1, i+1);
             stack.pop_back();
         }
     }
