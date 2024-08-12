@@ -4,13 +4,10 @@
 
 using namespace std;
 
-string removePattern(const string& str) {
+bool removePattern(const string& str) {
     string result;
-    regex pattern1("100+1");
-    result = regex_replace(str, pattern1, "");
-    regex pattern2("01");
-    result = regex_replace(result, pattern2, "");
-    return result;
+    regex pattern1("(100+1+|01)+");
+    return regex_match(str, pattern1);
 }
 int main() {
     int T;
@@ -18,24 +15,13 @@ int main() {
     cin >> T;
     while(T--){
         cin >> str;
-        str = removePattern(str);
-        if (!str.empty())
+        if (!removePattern(str))
         {
-            for (auto c : str)
-            {
-                if (c == '0')
-                {
-                    cout << "NO";
-                    break;
-                }
-                
-            }
-            cout << "YES";
+            cout << "NO\n";
         } else
         {
-            cout << "YES";
+            cout << "YES\n";
         }
-        cout << "\n";
     }
     return 0;
 }
