@@ -4,52 +4,60 @@
 #include <map>
 
 using namespace std;
+
+#define pii pair<int, int>
+#define INF 999999
+#define MAX 1001
 class Solution {
 public:
+    
     int networkDelayTime(vector<vector<int>>& times, int n, int k) {
-        vector<int> indegrees(n + 1, 0);
-        queue<int> queue;
-        vector<bool> visited(n + 1, false);
-        visited[k] = true;
-        map<int, vector<int>> timesMap;
-        int maxValue = 0;
+        /*
+        1. 종료조건을 어떻게 줄 것인가 ? {1, 2}, {2, 1}, 2, 2 인 경우 -> indegrees가 모두 계산되었을 때 어떻게 정답을 계산할 것인가 ? 
+        2. 뒤에 더 적은 비용으로 업데이트를 어떻게 해줄 것인가 ? 
+        */
+        int dist[MAX];
+        for (size_t i = 0; i < MAX; i++)
+        {
+            dist[i] = INF;
+        }
+        priority_queue<pii, vector<pii>, greater<pii>> queue;
+        map<int, vector<pii>> timesMap;
         for (auto time: times)
         {
-            timesMap[time[0]].push_back(time[1]);
-            indegrees[time[1]] = time[2];
+            timesMap[time[0]].push_back({time[2], time[1]});
         }
-        queue.push(k);
+        queue.push({0, k});
+        dist[k] = 0;
         while (!queue.empty())
         {
-            int qPop = queue.front();
+            int cost = queue.top().first;
+            int node = queue.top().second;
             queue.pop();
-            for (auto next: timesMap[qPop])
-            {
-                indegrees[next] += indegrees[qPop];
-                visited[next] = true;
-                queue.push(next);
-            }
-        }
-        
-        for (auto time: times)
-        {
-            if (visited[time[1]] == true)
-            {
-                maxValue = min(time[2], indegrees[time[1]]);
-            }
-            indegrees[time[1]] = indegrees[time[0]] + time[2];
-            maxValue = max(maxValue, indegrees[time[1]]);
-        }
-        for (size_t i = 1; i <= n; i++)
-        {
-            if (i == k)
+            if (dist[node] < cost)
             {
                 continue;
             }
-            if (indegrees[i] == 0)
+            
+            for (auto next: timesMap[node])
+            {
+                int nextCost = cost + next.first;
+                int nextNode = next.second;
+                if (nextCost < dist[nextNode])
+                {
+                    dist[nextNode] = nextCost;
+                    queue.push({nextCost, nextNode});
+                }
+            }
+        }
+        int maxValue = 0;
+        for (size_t i = 1; i <= n; i++)
+        {
+            if (dist[i] == INF)
             {
                 return -1;
             }
+            maxValue = max(maxValue, dist[i]);
         }
         return maxValue;
     }
