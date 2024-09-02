@@ -43,6 +43,7 @@ int main()
     // vector<int> works = {2, 1, 2};
     int n = 3;
     vector<int> works = {1, 1};
+    works.at(0);
     long long answer = solution(n, works);
     cout << answer;
     return 0;
