@@ -37,7 +37,6 @@ long long solution(int n, vector<int> times)
 int main()
 {
     long long answer = solution(6, {7, 10});
-    cout << answer;
 
     return 0;
 }
