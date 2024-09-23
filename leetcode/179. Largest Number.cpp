@@ -16,9 +16,9 @@ public:
             strNumber.push_back(to_string(nums[i]));
         }
         sort(strNumber.begin(), strNumber.end(), [](string &a, string &b)
-             {
+            {
                  return a + b > b + a; // 330이 303보다 더 앞에 올 수 있도록 두 수를 더한 후 비교
-             });
+            });
 
         for (size_t i = 0; i < strNumber.size(); i++)
         {
