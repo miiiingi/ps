@@ -7,7 +7,8 @@ using namespace std;
 long long solution(int n, vector<int> times)
 {
     /*
-    나눠야하는 경우의 수가 여러 개인 경우 어떻게 할 것인가 ?
+    1. count == n 인 경우 나누기 -> 계속 탐색을 계속해야하니까 멈추는 것은 맞지 않다. 따라서 count > n인 경우와 통합
+    2. answer = min(answer, mid)와 같이 적으면, 계속 탐색하는 과정에서 이전의 최솟값이 남아서 answer가 변하지 않을 가능성이 있으므로 answer = mid로 적어서 탐색이 끝났을 때의 값을 넣어주는 것이 맞다.
     */
     long long maxTime = *max_element(times.begin(), times.end());
     long long start = 1, end = maxTime * n;
