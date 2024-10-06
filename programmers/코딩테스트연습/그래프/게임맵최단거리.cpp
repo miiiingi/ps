@@ -1,44 +1,44 @@
-#include <vector>
-#include <queue>
+#include<vector>
+#include<queue>
 using namespace std;
-
-#define MAX 100
 #define pii pair<int, int>
-int solution(vector<vector<int>> maps)
+
+int solution(vector<vector<int> > maps)
 {
-    // initialize
-    int dist[MAX][MAX] = {1};
-    bool visited[MAX][MAX] = {false};
-    vector<pii> direction = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+    int dist[100][100];
+    for(int i = 0; i < 100; i++){
+        for(int j = 0; j < 100; j++){
+            dist[i][j] = 1;
+        }
+    }
+    bool visited[100][100] = {false};
+    vector<pii> DIRECTION = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
     visited[0][0] = true;
     queue<pii> q;
     q.push({0, 0});
-    while (!q.empty())
+        while (!q.empty())
     {
         int x = q.front().first;
         int y = q.front().second;
         q.pop();
-        for (size_t i = 0; i < direction.size(); i++)
+        for (int i = 0; i < 4; i++)
         {
-            int nx = x + direction[i].first;
-            int ny = y + direction[i].second;
-            if (nx < 0 || nx >= maps.size() || ny < 0 || ny >= maps[0].size() || maps[nx][ny] == 0 || visited[nx][ny])
+            int nextX = x + DIRECTION[i].first;
+            int nextY = y + DIRECTION[i].second;
+            if (nextX < 0 || nextX >= maps.size() || nextY < 0 || nextY >= maps[0].size() || visited[nextX][nextY] || maps[nextX][nextY] == 0)
             {
                 continue;
             }
-            visited[nx][ny] = true;
-            dist[nx][ny] = dist[x][y] + 1;
-            q.push({nx, ny});
+            q.push({nextX, nextY});
+            visited[nextX][nextY] = true;
+            dist[nextX][nextY] = dist[x][y] + 1;
         }
     }
-    if (dist[maps.size() - 1][maps[0].size() - 1] > 0)
-    {
-        return dist[maps.size() - 1][maps[0].size() - 1];
-    }
-    else
-    {
+
+    if(dist[maps.size()-1][maps[0].size()-1] == 1){
         return -1;
     }
+    return dist[maps.size()-1][maps[0].size()-1];
 }
 
 int main()
