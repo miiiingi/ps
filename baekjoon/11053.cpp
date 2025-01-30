@@ -8,6 +8,10 @@ int main()
     int n, answer = 0;
     cin >> n;
     vector<int> num_list(n);
+    /**
+     * dp문제를 풀 때, 수열을 어떻게 정의할 것인지 먼저 생각하기
+     * 이번 문제에서는 증가하는 수열에서 각 인덱스가 몇 번째 인지를 계산해야함
+    */
     vector<int> dp(n, 0);
     for (int i = 0; i < n; i++)
     {
