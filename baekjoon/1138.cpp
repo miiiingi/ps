@@ -4,8 +4,8 @@
 int main()
 {
     int N, temp;
-    std::vector<int> answer(N, 0);
     std::cin >> N;
+    std::vector<int> answer(N, 0);
     for (int i = 0; i < N; i++)
     {
         std::cin >> temp;
@@ -14,16 +14,17 @@ int main()
         {
             if (cnt == temp)
             {
+                int ind = 0;
                 while (true)
                 {
-                    if (answer[cnt] == 0)
+                    if (answer[j + ind] == 0)
                     {
-                        answer[cnt] = i + 1;
+                        answer[j + ind] = i + 1;
                         break;
                     }
                     else
                     {
-                        cnt++;
+                        ind++;
                     }
                 }
                 break;
@@ -37,7 +38,7 @@ int main()
     }
     for (int k = 0; k < N; k++)
     {
-        std::cout << "answer " << k << ": " << answer[k] << "\n";
+        std::cout << answer[k] << " ";
     }
 
     return 0;
