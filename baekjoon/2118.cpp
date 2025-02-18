@@ -26,12 +26,9 @@ int main()
     long long base = distance[left].second;
     for (int right = 1; right < N + 1; right++)
     {
-        // cout << "==================================" << "\n";
         base += distance[right].second;
         long long comp = totalDistance - base;
         answer = max(answer, min(base, comp));
-        // cout << "left: " << left << " right: " << right << "\n";
-        // cout << "base: " << base << " comp: " << comp << " answer: " << answer << "\n";
         if (base < comp)
         {
             continue;
@@ -43,8 +40,6 @@ int main()
                 base -= distance[left++].second;
                 long long comp = totalDistance - base;
                 answer = max(answer, min(base, comp));
-                // cout << "left: " << left << " right: " << right << "\n";
-                // cout << "base: " << base << " comp: " << comp << " answer: " << answer << "\n";
                 if (base < comp)
                 {
                     break;
