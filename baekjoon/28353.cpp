@@ -6,11 +6,9 @@ using namespace std;
 
 int main()
 {
-    int N;
-    int K;
+    int N, K;
     cin >> N >> K;
     vector<int> cats(N);
-    vector<bool> visited(5001, false);
     for (int i = 0; i < N; i++)
     {
         int temp;
@@ -18,12 +16,6 @@ int main()
         cats[i] = temp;
     }
     sort(cats.begin(), cats.end());
-    // for (int i = 0; i < N; i++)
-    // {
-    //     cout << cats[i] << " ";
-    // }
-    // cout << "\n";
-
     int cnt = 0, left = 0, right = N - 1;
     while (left < right)
     {
