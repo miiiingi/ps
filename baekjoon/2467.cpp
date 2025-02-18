@@ -4,38 +4,46 @@
 
 using namespace std;
 
+#define pii pair<int, int>
+
 int main()
 {
     int N;
     cin >> N;
-    vector<int> fluids(N);
-    vector<pair<int, int>> answer;
+    vector<long long> arr(N);
     for (int i = 0; i < N; i++)
     {
-        cin >> fluids[i];
+        cin >> arr[i];
     }
-    sort(fluids.begin(), fluids.end());
-    int start = 0, end = N - 1;
-    int leftmin = 0, rigthmin = 0;
-    int minValue = 2000000001;
-    while (start != end)
+    vector<pair<int, pii>> answer;
+    int left = 0, right = N - 1;
+    while (left < right)
     {
-        int sumValue = fluids[start] + fluids[end];
-        if (minValue > abs(sumValue))
+        long long diff = abs(arr[right] + arr[left]);
+        if (diff > 0)
         {
-            minValue = abs(sumValue);
-            leftmin = fluids[start], rigthmin = fluids[end];
-        }
-        if (sumValue <= 0)
-        {
-            start++;
+            answer.push_back(make_pair(diff, make_pair(arr[left], arr[right])));
+            long long diffL = abs(arr[right] + arr[left + 1]);
+            long long diffR = abs(arr[right - 1] + arr[left]);
+            if (diffL < diffR)
+            {
+                left++;
+            }
+            else
+            {
+                right--;
+            }
         }
         else
         {
-            end--;
+            cout << arr[left] << " " << arr[right];
+            return 0;
         }
     }
-    cout << leftmin << " " << rigthmin;
+
+    sort(answer.begin(), answer.end(), [](const pair<int, pii> &a, const pair<int, pii> &b)
+         { return a.first < b.first; });
+    cout << answer[0].second.first << " " << answer[0].second.second;
 
     return 0;
 }
