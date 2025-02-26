@@ -31,7 +31,6 @@ void moveQ(int num, vector<pii> &pos, vector<vector<string>> &board)
                     break;
                 }
                 board[nx][ny] = "Q";
-                // cout << "x: " << nx << " y: " << ny << "\n";
                 muliply++;
             }
         }
@@ -53,7 +52,6 @@ void moveK(int num, vector<pii> &pos, vector<vector<string>> &board)
             if (nx >= 0 && nx < board.size() && ny >= 0 && ny < board[0].size() && board[nx][ny] == ".")
             {
                 board[nx][ny] = "K";
-                // cout << "x: " << nx << " y: " << ny << "\n";
             }
         }
     }
@@ -63,7 +61,6 @@ void moveP(int num, vector<pii> &pos, vector<vector<string>> &board)
     for (int i = 0; i < num; i++)
     {
         board[pos[i].first][pos[i].second] = "PP";
-        // cout << "x: " << pos[i].first << " y: " << pos[i].second << "\n";
     }
 }
 int main()
@@ -75,10 +72,8 @@ int main()
     int numQ;
     for (int i = 0; i < 3; i++)
     {
-        // cout << "=======================" << "\n";
         int temp;
         cin >> temp;
-        // cout << "temp: " << temp << "\n";
         int x, y;
         vector<pii> tempVec;
         if (temp > 0)
@@ -86,7 +81,6 @@ int main()
             for (int j = 0; j < temp; j++)
             {
                 cin >> x >> y;
-                // cout << "x: " << x - 1 << " y: " << y - 1 << "\n";
                 tempVec.push_back(make_pair(x - 1, y - 1));
             }
         }
@@ -102,21 +96,15 @@ int main()
         }
         if (i == 2)
         {
-            // cout << "P" << "\n";
             moveP(unit[i].first, unit[i].second, board);
-            // cout << "P" << "\n";
         }
         else if (i == 1)
         {
-            // cout << "K" << "\n";
             moveK(unit[i].first, unit[i].second, board);
-            // cout << "K" << "\n";
         }
         else
         {
-            // cout << "Q" << "\n";
             moveQ(unit[i].first, unit[i].second, board);
-            // cout << "Q" << "\n";
         }
     }
     int answer = 0;
