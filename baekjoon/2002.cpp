@@ -1,4 +1,6 @@
+#include <algorithm>
 #include <iostream>
+#include <set>
 #include <vector>
 
 using namespace std;
@@ -9,6 +11,7 @@ int main()
     cin >> N;
     vector<psi> entrance(N);
     vector<psi> exit(N);
+
     for (int i = 0; i < N; i++)
     {
         string temp;
@@ -25,25 +28,32 @@ int main()
 
     int cnt = 0;
 
+    set<string> exceed;
+    set<string> forward;
     for (int i = 0; i < N; i++)
     {
         psi en = entrance[i];
+        forward.insert(en.first);
         for (int j = 0; j < N; j++)
         {
             psi ex = exit[j];
             if (en.first == ex.first)
             {
-                if (ex.second > en.second)
+                break;
+            }
+            else
+            {
+                if (find(forward.begin(), forward.end(), ex.first) == forward.end() &&
+                    find(exceed.begin(), exceed.end(), ex.first) == exceed.end())
                 {
-                    int forward = i;
-                    int total = ex.second - en.second;
-                    cnt += (forward + ex.second - en.second);
+
+                    exceed.insert(ex.first);
                 }
             }
-            // 1 2 3 4 5
-            // 4 5 1 3 2
         }
     }
+
+    cout << exceed.size();
 
     return 0;
 }
