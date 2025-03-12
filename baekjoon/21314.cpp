@@ -4,12 +4,9 @@
 
 using namespace std;
 
-int main()
+string calcMax(string s)
 {
-    string s;
-    cin >> s;
-    string maxS = "";
-    string minS = "";
+    string answer = "";
     int mCount = 0;
     for (size_t i = 0; i < s.size(); i++)
     {
@@ -21,36 +18,66 @@ int main()
         {
             if (mCount > 0)
             {
-                maxS += '5';
-                maxS.append(pow(10, mCount - 1), '0');
+                answer += '5';
+                answer.append(mCount, '0');
                 mCount = 0;
             }
             else
             {
-                maxS += '5';
+                answer += '5';
             }
         }
-        cout << "mCount : " << mCount << "\n";
-        cout << "maxS: " << maxS << "\n";
     }
     if (mCount > 0)
     {
-        auto temp = pow(10, mCount - 1);
-        if (temp == 1)
+        answer.append(mCount, '1');
+    }
+
+    return answer;
+}
+
+string calcMin(string s)
+{
+    string answer = "";
+    int mCount = 0;
+    for (size_t i = 0; i < s.size(); i++)
+    {
+        if (s[i] == 'M')
         {
-            maxS.append(1, '1');
+            mCount++;
         }
         else
         {
-            maxS.append(pow(10, mCount - 1), '0');
+            if (mCount > 0)
+            {
+                answer.append(1, '1');
+                answer.append(mCount - 1, '0');
+                answer += '5';
+                mCount = 0;
+            }
+            else
+            {
+                answer += '5';
+            }
         }
     }
-
-    cout << "maxS: " << maxS << "\n";
-
-    for (size_t i = 0; i < s.size(); i++)
+    if (mCount > 0)
     {
+        answer.append(1, '1');
+        answer.append(mCount - 1, '0');
     }
+
+    return answer;
+}
+
+int main()
+{
+    string s;
+    cin >> s;
+    string maxS = calcMax(s);
+    string minS = calcMin(s);
+    cout << maxS << "\n";
+    cout << minS;
 
     return 0;
 }
