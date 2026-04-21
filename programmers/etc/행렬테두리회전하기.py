@@ -3,22 +3,15 @@ from collections import deque
 
 def move(y0, x0, y1, x1):
     answer = []
-    dist_x = x1 - x0
-    dist_y = y1 - y0
-    for t_x in range(dist_x + 1):
-        answer.append([y0 - 1, x0 + t_x - 1])
-    for r_y in range(dist_y + 1):
-        coord = [y0 + r_y - 1, x0 + dist_x - 1]
-        if coord not in answer:
-            answer.append(coord)
-    for b_x in range(dist_x + 1):
-        coord = [y1 - 1, x1 - b_x - 1]
-        if coord not in answer:
-            answer.append(coord)
-    for l_y in range(dist_y + 1):
-        coord = [y1 - l_y - 1, x0 - 1]
-        if coord not in answer:
-            answer.append(coord)
+    y0, x0, y1, x1 = y0 - 1, x0 - 1, y1 - 1, x1 - 1
+    for t_x in range(x0, x1):
+        answer.append([y0, t_x])
+    for r_y in range(y0, y1):
+        answer.append([r_y, x1])
+    for b_x in range(x1, x0, -1):
+        answer.append([y1, b_x])
+    for l_y in range(y1, y0, -1):
+        answer.append([l_y, x0])
     return answer
 
 
