@@ -1,0 +1,46 @@
+from collections import deque
+
+
+def move(y0, x0, y1, x1):
+    answer = []
+    dist_x = x1 - x0
+    dist_y = y1 - y0
+    for t_x in range(dist_x + 1):
+        answer.append([y0 - 1, x0 + t_x - 1])
+    for r_y in range(dist_y + 1):
+        coord = [y0 + r_y - 1, x0 + dist_x - 1]
+        if coord not in answer:
+            answer.append(coord)
+    for b_x in range(dist_x + 1):
+        coord = [y1 - 1, x1 - b_x - 1]
+        if coord not in answer:
+            answer.append(coord)
+    for l_y in range(dist_y + 1):
+        coord = [y1 - l_y - 1, x0 - 1]
+        if coord not in answer:
+            answer.append(coord)
+    return answer
+
+
+def solution(rows, columns, queries):
+    matrix = [[0 for _ in range(columns)] for _ in range(rows)]
+    num = 1
+    result = []
+    for i in range(rows):
+        for j in range(columns):
+            matrix[i][j] = num
+            num += 1
+    elem_list = deque()
+    for query in queries:
+        start_y, start_x, end_y, end_x = query
+        move_list = move(start_y, start_x, end_y, end_x)
+        move_list = deque(move_list)
+        for m in move_list:
+            my, mx = m
+            elem_list.append(matrix[my][mx])
+        result.append(min(elem_list))
+        move_list.rotate(-1)
+        for m in move_list:
+            my, mx = m
+            matrix[my][mx] = elem_list.popleft()
+    return result
